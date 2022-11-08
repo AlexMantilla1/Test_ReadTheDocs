@@ -1,0 +1,365 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Main Team" href="sub_files/human_team.html" />
+
+    <meta name="generator" content="sphinx-4.3.2, furo 2022.09.29"/>
+        <title>Delta-Sigma-Modulator V0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">Delta-Sigma-Modulator V0.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">Delta-Sigma-Modulator V0.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sub_files/human_team.html">Main Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sub_files/marketing.html">Marketing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sub_files/theoretical_deep.html">Theorical deepening</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sub_files/problem.html">The Problem</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="welcome-to-delta-sigma-modulator-s-documentation">
+<h1>Welcome to Delta-Sigma-Modulator’s documentation!<a class="headerlink" href="#welcome-to-delta-sigma-modulator-s-documentation" title="Permalink to this headline">#</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sub_files/human_team.html">Main Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sub_files/marketing.html">Marketing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sub_files/theoretical_deep.html">Theorical deepening</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sub_files/problem.html">The Problem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sub_files/problem.html#adc">∆Σ ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sub_files/problem.html#power-consumption-in-a-modulador">Power Consumption in a ∆Σ Modulador</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h2>
+<p>Nowadays, there is a growing demand for IoT devices to strengthen this Smart City concept,
+connecting all the systems in a given environment. This is great for users who have more and
+more options to solve specific problems comfortably, but it is a headache for the design engineers
+of these systems since these systems are full of limitations to consider. One of the main
+limitations is that energy consumption is becoming increasingly critical because these are
+battery-powered systems, they are systems that work with solar energy or simply because a
+network of systems that is more efficient in energy consumption is desired.</p>
+<p>Within these IoT devices, there is a wide variety of applications that require
+digital processing, using the data obtained from the environment, a couple of those
+could be telecommunications, instrumentation, among others. In practice, the data
+obtained by the environment is purely analog, so data conversion systems, to make this data
+usable by the processing core (analog-to-digital converter; ADC) are needed. Figure 1 shows a
+diagram of a basic sensing system where analog systems are shown in blue and digital systems in
+green. Here a physical variable or state is measured by a sensor, creating an electric analog
+signal who is converted into digital data by the ADC and send to the processing unit to decide
+what to do whit this information. Let’s think this “Any physical system” could be your room and
+you want to control the temperature, so you measure the temperature and the processing core can
+decide if the air-conditioning should be increased, decreased, turn on or just turn off.
+The main point is that you measured an analog variable like temperature, humidity, pressure,
+Oxygen level, or whatever you need to know about and this analog information is converted into
+digital through an ADC, this is why almost any kind of IoT system requires a converter.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="_images/SensingBlockDiagram.png"><img alt="Figure 1." src="_images/SensingBlockDiagram.png" style="width: 639.0px; height: 453.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1. Diagram of a basic sensing system.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Here we can just follow a logical thought that is if any IoT
+system needs to care about its energy consumption and any IoT
+system requires an ADC so the ADC design for IoT needs to care
+about energy consumption. The objective of this project is to
+reduce the power consumption of a Delta-Sigma ADC, more
+exclusively to reduce the consumption of the modulator of this
+system, making it a more solid alternative for these current
+IoT systems. To this end, this project is limited, for economic
+reasons, to carry out the design study on models and
+simulations, without manufacturing the final result in Silicon.</p>
+<p>However, this will lay the groundwork so that in the future,
+this block can be used in a larger project that is a candidate
+for manufacturing and physical testing, thus noting a possible
+future impact on students requiring low power in their projects
+related to the area and a delta-sigma modulation within an ADC.</p>
+<p>In addition to contributing with this design to the block
+libraries of the OnChip research group of which we are part
+as collaborators. With this providing one more block to the
+SoCs designed in Colombia.
+In this way, the OnChip group is identified as the main
+interested party and as a client of the solution provided
+by this project.</p>
+<p>The market for the development of IoT systems in Colombia has
+not been exploited, being a developing country, the number of
+companies or entities focused on the development and
+manufacture of the intellectual property of these systems is
+very limited, and for this reason, entering a market around
+these applications for smart or autonomous homes or buildings
+is very difficult due to the high costs of the design and
+manufacturing processes that these systems must go through.
+However, in developed countries such as the USA, Germany,
+Austria, England, Russia, among others, there is a growing
+market for the middle class, which allows them to enjoy
+intelligent systems in the comfort of their homes, and projects
+like this one can be valuable for those markets. Nowadays,
+discussions about SoC in Colombia are just academic, and there
+are some universities like the Universidad Industrial de
+Santander who are trying to improve in this field.</p>
+<p>To introduce this project, we would like to introduce some
+basic concepts about ADCs as systems, to expand on these
+concepts press the <strong>theoretical deepening</strong> button, or if you
+have a good idea about ADCs, let us introduce you to the
+problem we want to address in <strong>the problem</strong> button.</p>
+<section id="indices-and-tables">
+<h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="sub_files/theoretical_deep.html#theoretical"><span class="std std-ref">Theorical deepening</span></a></p></li>
+<li><p><a class="reference internal" href="sub_files/problem.html#problem"><span class="std std-ref">The Problem</span></a></p></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="sub_files/human_team.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Main Team</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, Alex Mantilla - Daniel Gomez
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Welcome to Delta-Sigma-Modulator’s documentation!</a><ul>
+<li><a class="reference internal" href="#motivation">Motivation</a><ul>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    </body>
+</html>

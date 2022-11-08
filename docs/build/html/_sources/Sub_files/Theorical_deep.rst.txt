@@ -1,0 +1,11 @@
+
+.. _Theorical:
+
+Theorical deepening
+###################
+
+In order to further explain the problem to be tackled in this 
+project, first, technical definitions in the context of data 
+converters are presented just like a glossary, thus seeking to 
+provide more clarity to the approaches explained in the problem 
+statement.

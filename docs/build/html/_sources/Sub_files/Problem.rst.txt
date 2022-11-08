@@ -1,0 +1,127 @@
+
+.. _Problem:
+
+The Problem
+###########
+
+The Analog to Digital converter is a fundamental system in 
+most sensing devices because it is the one that allows the
+processor to read the information from the outside, it is a
+block in which part of the energy demand of the SoC can 
+definitely be saved, that is so the need arises for an ADC 
+bounded by specific demand of resolution, accuracy, 
+DNL (Differential Nonlinearity), no Missing codes, 
+INL (Integral Nonlinearity), low gain and offset error 
+among other performance characteristics, that also has low 
+power consumption and silicon area for the targeted application 
+market.
+
+Different architectures for ADCs can be found in the literature,
+such as Flash, Pipelined, or SAR, which calculate a digital 
+conversion for each sample taken, very quickly. However, their 
+performance is sensitive to the variations that the elements 
+that compose them may have in the manufacturing process. On the 
+other hand, delta-sigma modulation (∆Σ) appears to be much more 
+robust for these purposes, converting the sampled analog value 
+into the moving average of a signal, achieving high performance
+without the need for error correction techniques. However, 
+this is possible at the cost of a higher sample rate and more 
+digital area.
+
+In devices with a limited power supply, such as sensor systems 
+or biomedical applications, one way to reduce the consumption 
+of your systems is to lower the supply voltage. This is also a 
+great difficulty for architectures such as flash, pipelined,
+or SAR. However, the low complexity of the analog circuits and 
+the robustness of the ∆Σ modulators make the modulator the 
+preferred candidate against other low voltage topologies. 
+Delta-sigma modulator designs have been reported that operate 
+at voltages as low as 0.25V, but have very low 
+operating frequencies. On the other hand, a topology for ∆Σ 
+modulators of switched capacitor circuits based on inverters is 
+implemented, where supply voltages down to 0.7V have 
+been reported. Although this topology shows better performance, 
+it also has drawbacks when it comes to lowering the supply 
+voltage.
+
+∆Σ ADC
+********
+
+To understand how the power consumption of a ∆Σ data 
+converter can be reduced, a quick summary of the system, 
+in general, is presented in Figure 1, where it can be seen 
+that an ADC of this type can be separated into 3 subsystems; 
+the ∆Σ modulator, the digital low pass filter, and a 
+decimation filter. The objective of the modulator is to 
+sample the input signal :math:`u(t)` very quickly and generate a 
+quantized output signal :math:`v(t)` such that its average is equal 
+to the value of the signal :math:`u(t)`, that is,
+
+.. math::
+
+    u(t) = avg( v(t) )
+
+It is necessary to clarify that this is an approximation and 
+for it to be a good one, the :math:`u(t)` signal must be very slow 
+compared to the clock frequency with which it is sampled, 
+that is, :math:`F_{CLKOS}` . With that idea let's define the OverSampling 
+Ratio :math:`(OSR)` concept given numerically by
+
+.. math::
+
+    OSR = F_{CLKOS} / F_{CLKFS}
+
+Where :math:`F_{CLKFS}` is the frequency of the system's sampling clock, 
+that is, the actual sampling rate for each sample taken by the 
+converter (this is the sampling frequency that the Nyquist 
+criterion must respect to sample :math:`u(t)`), and :math:`F_{CLKOS}`
+is the clock frequency at which the signal :math:`u(t)`
+is oversampled to modulate it and generate :math:`v(t)`. 
+Since :math:`v(t)` can then be understood as a serial digital 
+signal, the objective of the digital low-pass filter is to 
+filter the high-frequency components with a cutoff frequency :math:`fc = π/OSR`; 
+This filter is also known as an averaging filter and it is 
+necessary to realize that the length of the discrete impulse 
+response of this system is directly related to the number of 
+bits *N* of the converter, since
+
+.. math::
+
+    len(LPF) = OSR = 2^N
+
+For this reason, it is recommended the *OSR* should be a power 
+of 2, to make full use of the *N* bits. Finally, the decimation 
+filter is necessary to keep only 1 of those *OSR* samples taken 
+by the modulator, since each sample of the filter output 
+corresponds to the average of the last *OSR* samples entered to 
+the filter, thus obtaining in :math:`u(n)` a digital
+version of :math:`u(t)`.
+
+.. figure:: ../../IMG/DSADCsystem.png
+ :alt: Figure 1. General diagram of a ∆Σ ADC system.
+   
+ Figure 1. General diagram of a ∆Σ ADC system.
+
+Now, let's consider ways to reduce the power consumption of this type of ADC.
+Note that both, the averaging filter and the decimation filter, are implemented 
+digitally, so their implementation is done using the tools and libraries of the 
+technology used...so there are few degrees of freedom on the implementation, it 
+is possible to reduce the frequency of the clocks and correctly reduce the number
+of logic gates used, to save some energy. On the other hand, the modulator is an 
+analog system where a complete analysis of energy consumption can be carried out 
+and techniques for its reduction can be proposed.
+
+Power Consumption in a ∆Σ Modulador
+*************************************
+
+The presented project is based on the implementation of power reduction techniques 
+in a Delta-Sigma modulator. ::numref:`Figura 2 <Fig. %s>`  shows the classic block diagram of a second-order 
+Delta-Sigma modulator to be implemented. First, it is necessary to clarify which 
+sections and how these modulators consume energy. Note that for an *Nth-order* modulator, 
+*N* integrators are required. For this project, 2 integrators are required for a second-order
+*∆Σ* modulator. This will be the first part to be analyzed; the integrator implementation.
+
+.. figure:: ../../IMG/2ndOrderDS.png
+ :alt: Figure 2. Block diagram of a second order DS modulator
+
+ ::numref:`Figura 2 <Fig. %s>` : Block diagram of a second order DS modulator

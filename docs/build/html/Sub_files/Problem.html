@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>The Problem &#8212; Delta-Sigma-Modulator V0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Theorical deepening" href="Theorical_deep.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="the-problem">
+<span id="problem"></span><h1>The Problem<a class="headerlink" href="#the-problem" title="Permalink to this headline">¶</a></h1>
+<p>The Analog to Digital converter is a fundamental system in
+most sensing devices because it is the one that allows the
+processor to read the information from the outside, it is a
+block in which part of the energy demand of the SoC can
+definitely be saved, that is so the need arises for an ADC
+bounded by specific demand of resolution, accuracy,
+DNL (Differential Nonlinearity), no Missing codes,
+INL (Integral Nonlinearity), low gain and offset error
+among other performance characteristics, that also has low
+power consumption and silicon area for the targeted application
+market.</p>
+<p>Different architectures for ADCs can be found in the literature,
+such as Flash, Pipelined, or SAR, which calculate a digital
+conversion for each sample taken, very quickly. However, their
+performance is sensitive to the variations that the elements
+that compose them may have in the manufacturing process. On the
+other hand, delta-sigma modulation (∆Σ) appears to be much more
+robust for these purposes, converting the sampled analog value
+into the moving average of a signal, achieving high performance
+without the need for error correction techniques. However,
+this is possible at the cost of a higher sample rate and more
+digital area.</p>
+<p>In devices with a limited power supply, such as sensor systems
+or biomedical applications, one way to reduce the consumption
+of your systems is to lower the supply voltage. This is also a
+great difficulty for architectures such as flash, pipelined,
+or SAR. However, the low complexity of the analog circuits and
+the robustness of the ∆Σ modulators make the modulator the
+preferred candidate against other low voltage topologies.
+Delta-sigma modulator designs have been reported that operate
+at voltages as low as 0.25V, but have very low
+operating frequencies. On the other hand, a topology for ∆Σ
+modulators of switched capacitor circuits based on inverters is
+implemented, where supply voltages down to 0.7V have
+been reported. Although this topology shows better performance,
+it also has drawbacks when it comes to lowering the supply
+voltage.</p>
+<section id="adc">
+<h2>∆Σ ADC<a class="headerlink" href="#adc" title="Permalink to this headline">¶</a></h2>
+<p>To understand how the power consumption of a ∆Σ data
+converter can be reduced, a quick summary of the system,
+in general, is presented in Figure 1, where it can be seen
+that an ADC of this type can be separated into 3 subsystems;
+the ∆Σ modulator, the digital low pass filter, and a
+decimation filter. The objective of the modulator is to
+sample the input signal <span class="math notranslate nohighlight">\(u(t)\)</span> very quickly and generate a
+quantized output signal <span class="math notranslate nohighlight">\(v(t)\)</span> such that its average is equal
+to the value of the signal <span class="math notranslate nohighlight">\(u(t)\)</span>, that is,</p>
+<div class="math notranslate nohighlight">
+\[u(t) = avg( v(t) )\]</div>
+<p>It is necessary to clarify that this is an approximation and
+for it to be a good one, the <span class="math notranslate nohighlight">\(u(t)\)</span> signal must be very slow
+compared to the clock frequency with which it is sampled,
+that is, <span class="math notranslate nohighlight">\(F_{CLKOS}\)</span> . With that idea let’s define the OverSampling
+Ratio <span class="math notranslate nohighlight">\((OSR)\)</span> concept given numerically by</p>
+<div class="math notranslate nohighlight">
+\[OSR = F_{CLKOS} / F_{CLKFS}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(F_{CLKFS}\)</span> is the frequency of the system’s sampling clock,
+that is, the actual sampling rate for each sample taken by the
+converter (this is the sampling frequency that the Nyquist
+criterion must respect to sample <span class="math notranslate nohighlight">\(u(t)\)</span>), and <span class="math notranslate nohighlight">\(F_{CLKOS}\)</span>
+is the clock frequency at which the signal <span class="math notranslate nohighlight">\(u(t)\)</span>
+is oversampled to modulate it and generate <span class="math notranslate nohighlight">\(v(t)\)</span>.
+Since <span class="math notranslate nohighlight">\(v(t)\)</span> can then be understood as a serial digital
+signal, the objective of the digital low-pass filter is to
+filter the high-frequency components with a cutoff frequency <span class="math notranslate nohighlight">\(fc = π/OSR\)</span>;
+This filter is also known as an averaging filter and it is
+necessary to realize that the length of the discrete impulse
+response of this system is directly related to the number of
+bits <em>N</em> of the converter, since</p>
+<div class="math notranslate nohighlight">
+\[len(LPF) = OSR = 2^N\]</div>
+<p>For this reason, it is recommended the <em>OSR</em> should be a power
+of 2, to make full use of the <em>N</em> bits. Finally, the decimation
+filter is necessary to keep only 1 of those <em>OSR</em> samples taken
+by the modulator, since each sample of the filter output
+corresponds to the average of the last <em>OSR</em> samples entered to
+the filter, thus obtaining in <span class="math notranslate nohighlight">\(u(n)\)</span> a digital
+version of <span class="math notranslate nohighlight">\(u(t)\)</span>.</p>
+<figure class="align-default" id="id1">
+<img alt="Figure 1. General diagram of a ∆Σ ADC system." src="../_images/DSADCsystem.png" />
+<figcaption>
+<p><span class="caption-text">Figure 1. General diagram of a ∆Σ ADC system.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Now, let’s consider ways to reduce the power consumption of this type of ADC.
+Note that both, the averaging filter and the decimation filter, are implemented
+digitally, so their implementation is done using the tools and libraries of the
+technology used…so there are few degrees of freedom on the implementation, it
+is possible to reduce the frequency of the clocks and correctly reduce the number
+of logic gates used, to save some energy. On the other hand, the modulator is an
+analog system where a complete analysis of energy consumption can be carried out
+and techniques for its reduction can be proposed.</p>
+</section>
+<section id="power-consumption-in-a-modulador">
+<h2>Power Consumption in a ∆Σ Modulador<a class="headerlink" href="#power-consumption-in-a-modulador" title="Permalink to this headline">¶</a></h2>
+<p>The presented project is based on the implementation of power reduction techniques
+in a Delta-Sigma modulator. :<code class="xref std std-numref docutils literal notranslate"><span class="pre">Figura</span> <span class="pre">2</span></code>  shows the classic block diagram of a second-order
+Delta-Sigma modulator to be implemented. First, it is necessary to clarify which
+sections and how these modulators consume energy. Note that for an <em>Nth-order</em> modulator,
+<em>N</em> integrators are required. For this project, 2 integrators are required for a second-order
+<em>∆Σ</em> modulator. This will be the first part to be analyzed; the integrator implementation.</p>
+<figure class="align-default" id="id2">
+<img alt="Figure 2. Block diagram of a second order DS modulator" src="../_images/2ndOrderDS.png" />
+<figcaption>
+<p><span class="caption-text">:<code class="xref std std-numref docutils literal notranslate"><span class="pre">Figura</span> <span class="pre">2</span></code> : Block diagram of a second order DS modulator</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Delta-Sigma-Modulator</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Hteam.html">Main Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publicidad.html">Advertising</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theorical_deep.html">Theorical deepening</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The Problem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adc">∆Σ ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#power-consumption-in-a-modulador">Power Consumption in a ∆Σ Modulador</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Theorical_deep.html" title="previous chapter">Theorical deepening</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Alex Mantilla - Daniel Gomez.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/Sub_files/Problem.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
