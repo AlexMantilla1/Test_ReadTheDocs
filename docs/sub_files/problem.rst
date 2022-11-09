@@ -96,7 +96,7 @@ corresponds to the average of the last *OSR* samples entered to
 the filter, thus obtaining in :math:`u(n)` a digital
 version of :math:`u(t)`.
 
-.. figure:: ../../IMG/DSADCsystem.png
+.. figure:: ../IMG/DSADCsystem.png
  :alt: Figure 1. General diagram of a ∆Σ ADC system.
    
  Figure 1. General diagram of a ∆Σ ADC system.
@@ -120,7 +120,7 @@ sections and how these modulators consume energy. Note that for an *Nth-order* m
 *N* integrators are required. For this project, 2 integrators are required for a second-order
 *∆Σ* modulator. This will be the first part to be analyzed; the integrator implementation.
 
-.. figure:: ../../IMG/2ndOrderDS.png
+.. figure:: ../IMG/2ndOrderDS.png
  :alt: Figure 2. Block diagram of a second order DS modulator
 
  ::numref:`Figura 2 <Fig. %s>` : Block diagram of a second order DS modulator

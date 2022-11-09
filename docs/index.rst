@@ -42,13 +42,13 @@ The main point is that you measured an analog variable like temperature, humidit
 Oxygen level, or whatever you need to know about and this analog information is converted into 
 digital through an ADC, this is why almost any kind of IoT system requires a converter.
 
-.. figure:: ../IMG/SensingBlockDiagram.png
+.. figure:: IMG/SensingBlockDiagram.png
    :scale: 100%
    :alt: Figure 1.
    
    Figure 1. Diagram of a basic sensing system.
 ..   :align: left
-..   :target: ../IMG/SensingBlockDiagram.png
+..   :target: IMG/SensingBlockDiagram.png
 ..   :height: 100
 ..   :width: 200
  Diagram of a basic sensing system.
